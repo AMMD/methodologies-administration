@@ -1,0 +1,38 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=2cm,includehead,includefoot]{geometry}
+\usepackage[french]{babel}
+\usepackage[pdftex]{graphicx}
+\usepackage[usenames]{color}
+\usepackage[french]{varioref}
+\usepackage{longtable}
+\usepackage{gitinfo}
+\usepackage[backend=bibtex8,backref=true]{biblatex}
+\addbibresource{methodologie-administration.bib}
+   \defbibcheck{online}{\iffieldundef{url}{\skipentry}{}}
+   \defbibcheck{notonline}{\iffieldundef{url}{}{\skipentry}}
+
+\newcommand{\AMMD}{Amicale du Mekanik Metam Disco}
+
+\title{Méthodologies et structures fonctionnelles administratives}
+\author{
+  \begin{tabular}{p{7.5cm} r}
+      \multicolumn{2}{r}{version en date du \gitAuthorIsoDate, {\scriptsize r\'evision \gitAbbrevHash{}}}\\
+      \hline
+      \href{mailto:tresorier@ammd.net}{Grégory \bsc{David}} & \\
+      & Trésorier de l'association \AMMD \\
+  \end{tabular}
+}
+\date{}
+
+\begin{document}
+% \rhead{}\chead{}\lhead{}
+% \headrule
+% \lfoot{}\cfoot{}\rfoot{\thepage}
+% \footrule
+
+
+\maketitle
+
+bla
+\end{document}
