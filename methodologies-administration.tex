@@ -1,29 +1,84 @@
 \documentclass[a4paper]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[margin=2cm,includehead,includefoot]{geometry}
-\usepackage[french]{babel}
+%\usepackage[margin=2cm,includehead,includefoot]{geometry}
+\usepackage[english,french]{babel}
+    \newcommand{\en}{\selectlanguage{english}}
+    \newcommand{\fr}{\selectlanguage{french}}
+
 \usepackage[pdftex]{graphicx}
 \usepackage[usenames]{color}
 \usepackage[french]{varioref}
 \usepackage{longtable}
 \usepackage{gitinfo}
 \usepackage[backend=bibtex8,backref=true]{biblatex}
-\addbibresource{methodologie-administration.bib}
+\addbibresource{methodologies-administration.bib}
    \defbibcheck{online}{\iffieldundef{url}{\skipentry}{}}
    \defbibcheck{notonline}{\iffieldundef{url}{}{\skipentry}}
+\usepackage[%
+	pdftex,%
+	bookmarks=false,%
+	bookmarksopen=false,%
+	bookmarksnumbered=false,%
+	pdfborder=0,%
+	pdfmenubar=true,%
+	pdftoolbar=true,%
+	pdfpagelabels=true,%
+	pdftitle={Methodologies administratives},%
+	pdfauthor={Gr\'egory DAVID},%
+	pdfsubject={Méthodologies de travail dans l'administration de l'AMMD},%
+	pdfpagelayout={OneColumn},%
+	plainpages=true,%
+	pdfstartview=FitH%
+]{hyperref}
+\usepackage{listings}
+\lstset{%
+  basicstyle=\scriptsize\ttfamily,%
+  numbers=left,%
+  frame=trBL,%
+  breaklines=true,%
+  breakatwhitespace=true,%
+  escapeinside={(*@}{@*)},%
+  extendedchars=false,%
+}
 
 \newcommand{\AMMD}{Amicale du Mekanik Metam Disco}
+\newcommand{\image}[5][\textwidth]{%
+% #1 = largeur de la minipage
+% #2 = nom de fichier de l'image a incruster
+% #3 = includegraphics options
+% #4 = le texte du caption
+% #5 = label de l'element
+    \begin{figure}
+        \centering
+            \begin{minipage}[c]{#1}
+                \centering
+                \includegraphics[#3]{#2}
+                \caption{#4}
+                \label{#5}
+            \end{minipage}
+    \end{figure}
+}
+\newcommand{\tableau}[4]{%
+% #1 = parametres des colonnes
+% #2 = contenu du tableau
+% #3 = le texte du caption
+% #4 = label de l'element
+    \begin{table}
+        \centering
+        \begin{tabular}{#1}
+            #2
+        \end{tabular}
+        \caption{#3}
+        \label{#4}
+    \end{table}
+    %\afterpage{\clearpage}
+}
 
 \title{Méthodologies et structures fonctionnelles administratives}
-\author{
-  \begin{tabular}{p{7.5cm} r}
-      \multicolumn{2}{r}{version en date du \gitAuthorIsoDate, {\scriptsize r\'evision \gitAbbrevHash{}}}\\
-      \hline
-      \href{mailto:tresorier@ammd.net}{Grégory \bsc{David}} & \\
-      & Trésorier de l'association \AMMD \\
-  \end{tabular}
-}
-\date{}
+\author{\href{mailto:tresorier@ammd.net}{Grégory \bsc{David}}}
+\date{\today\\ {\scriptsize r\'evision \gitAbbrevHash{} du \gitAuthorIsoDate}}
+
+\listfiles{}
 
 \begin{document}
 % \rhead{}\chead{}\lhead{}
@@ -31,8 +86,230 @@
 % \lfoot{}\cfoot{}\rfoot{\thepage}
 % \footrule
 
-
 \maketitle
+\tableofcontents{}
+\listoftables{}
+\listoffigures{}
+\newpage
+\section{Administratif}
+\label{sec:Tresorerie}
 
-bla
+\subsection{Faire un contrat de cession}
+\label{sec:FaireContratCession}
+Utiliser le modèle \LaTeX{} pour la création des contrats de cession Libre de l'AMMD à l'adresse : \url{https://github.com/AMMD/contrat_de_cession} ou en clone le dépôt : \lstinline{git clone git@github.com:AMMD/contrat_de_cession.git}.
+
+
+\subsubsection{Création d'un nouveau contrat}
+\label{sec:CreationNouveauContratCession}
+
+\paragraph{Nouveau contrat vierge}
+\label{sec:NouveauContratCessionVierge}
+\begin{enumerate}
+    \item création de la copie local du dépôt git :
+    \lstinline{git clone https://github.com/AMMD/contrat_de_cession.git}
+    \item on se déplace dans le nouveau répertoire créé :
+    \lstinline{cd contrat_de_cession}
+    \item création de la nouvelle branche de travail :
+    \lstinline{git checkout -b nomDuGroupe-lieu-date-WIP}
+
+    \item réaliser les modifications dans le fichier
+    \lstinline{config.tex}
+    \item modifier les articles du contrat dans le fichier
+    \lstinline{main.tex} (si besoin, et en discussion avec
+    l'organisateur)
+    \item ajouter les fichiers modifiés à la liste de la prochaine
+    validation git : \lstinline{git add config.tex main.tex}
+
+    \item valider les modifications faites dans git :
+    \lstinline{git commit -m "Message de validation"}
+    \item pousser les validation sur le dépôt central :
+    \lstinline{git push origin nomDuGroupe-lieu-date-WIP}
+    \item refaire les points 4, 5, 6, 7 et 8 tant que le contrat
+    n'est pas validé par les deux partenaires (tourneur et
+    organisateur)
+    \item lorsque le contrat est validé par les deux partenaires :
+    \lstinline{git tag nomDuGroupe-lieu-date} (on peut faire
+      une signature numérique GPG du tag en ajoutant l'option
+      \lstinline{-s})
+    \item on pousse sur le dépôt central le tag nouvellement créé
+    : \lstinline{git push nomDuGroupe-lieu-date}
+    \item puis supprimer la branche sur laquelle nous travaillions
+    : \lstinline{git branch -D nomDuGroupe-lieu-date-WIP}
+    \item on pousse sur le dépôt central la suppression de branche
+    : \lstinline{git push origin --delete nomDuGroupe-lieu-date-WIP}
+\end{enumerate}
+
+\paragraph{Nouveau contrat depuis un existant}
+\label{sec:NouveauContratCessionDepuisExistant}
+\begin{enumerate}
+    \item \lstinline{git clone https://github.com/AMMD/contrat_de_cession.git}
+    \item \lstinline{cd contrat_de_cession}
+    \item on change de branche pour aller dans celle qui contient déjà
+    des informations : \lstinline{git checkout branche-ou-tag-existant}
+    \item création de la nouvelle branche de travail :
+    \lstinline{git checkout -b nomDuGroupe-lieu-date-WIP}
+    \item réaliser les modifications dans le fichier
+    \lstinline{config.tex}
+    \item modifier les articles du contrat dans le fichier
+    \lstinline{main.tex} (si besoin, et en discussion avec
+    l'organisateur)
+    \item ajouter les fichiers modifiés à la liste de la prochaine
+    validation git : \lstinline{git add config.tex main.tex}
+    \item valider les modifications faites dans git :
+    \lstinline{git commit -m "Message de validation"}
+    \item pousser les validation sur le dépôt central :
+    \lstinline{git push origin nomDuGroupe-lieu-date-WIP}
+    \item refaire les points 4, 5, 6, 7 et 8 tant que le contrat n'est
+    pas validé par les deux partenaires (tourneur et organisateur)
+    \item lorsque le contrat est validé par les deux partenaires :
+    \lstinline{git tag nomDuGroupe-lieu-date} (on peut faire
+      une signature numérique GPG du tag en ajoutant l'option
+      \lstinline{-s})
+    \item on pousse sur le dépôt central le tag nouvellement créé :
+    \lstinline{git push nomDuGroupe-lieu-date}
+    \item puis supprimer la branche sur laquelle nous travaillions :
+    \lstinline{git branch -D nomDuGroupe-lieu-date-WIP}
+    \item on pousse sur le dépôt central la suppression de branche :
+    \lstinline{git push origin --delete nomDuGroupe-lieu-date-WIP}
+\end{enumerate}
+
+\subsubsection{Modification d'un contrat de cession}
+\label{sec:ModificationContratCession}
+\begin{enumerate}
+    \item éditer et modifier le fichier \lstinline{config.tex}
+    en accord avec les informations en votre possession
+    \item vérifier que toutes les variables sont adaptées et qu'il ne
+    reste pas de \lstinline{CHANGE-ME}
+    \item compiler le document
+\end{enumerate}
+
+\subsubsection{Compilation d'un contrat de cession}
+\label{sec:CompilationContratCession}
+\begin{enumerate}
+    \item première compilation LaTeX : \lstinline{pdflatex main}
+    \item deuxième compilation LaTeX pour avoir les références
+    internes correctes : \lstinline{pdflatex main}
+    \item affichage du contrat de cession :
+    \lstinline{evince main.pdf}
+\end{enumerate}
+
+\subsubsection{Ajout du contrat de cession validé à la facture dans le Dolibarr}
+\label{sec:DolibarrContratCession}
+\begin{enumerate}
+    \item récupérer la version du contrat de cession adaptée
+    (Cf. \vref{sec:NouveauContratCessionDepuisExistant})
+    \item compiler le contrat de cession (Cf. \vref{sec:CompilationContratCession})
+    \item renommer le fichier de contrat de cession :
+    \lstinline{mv main.pdf nomDuGroup-lieu-date.pdf}
+    \item charger en tant que \emph{fichier joint} le fichier
+    \lstinline{nomDuGroupe-lieu-date.pdf} à la facture client (Cf. \vref{sec:DolibarrFactureClient})
+\end{enumerate}
+
+\section[Dolibarr, logiciel de gestion]{Dolibarr}
+\label{sec:Dolibarr}
+Dolibarr ERP \& CRM est un logiciel modulaire (on n'active que les
+fonctions que l'on désire) de gestions de TPE/PME, d'indépendants,
+d'entrepreneurs ou d'associations.
+
+\subsection{Gestion de projet}
+\label{sec:DolibarrGestionProjet}
+
+\subsubsection{Ajouter un projet}
+\label{sec:DolibarrAjouterProjet}
+
+\subsubsection{Ajouter des tâches}
+\label{sec:DolibarrAjouterTaches}
+
+\subsection{Ajouter un nouveau contact}
+\label{sec:DolibarrAjouterNouveauContact}
+
+\subsection{Ajouter un nouveau client}
+\label{sec:DolibarrAjouterNouveauClient}
+
+\subsection{Ajouter un nouveau fournisseur}
+\label{sec:DolibarrAjouterNouveauFournisseur}
+
+\subsection{Créer une facture client}
+\label{sec:DolibarrFactureClient}
+
+\subsection{Créer une facture fournisseur}
+\label{sec:DolibarrFactureFournisseur}
+
+\subsection{Ajouter un nouveau service à vendre ou à acheter}
+\label{sec:DolibarrNouveauService}
+
+\subsection{Ajouter un nouveau produit à vendre ou à acheter}
+\label{sec:DolibarrNouveauProduit}
+
+\subsection{Faire un rapprochement bancaire}
+\label{sec:DolibarrBanqueRapprochement}
+
+\subsection{Créer un nouveau bon de commande fournisseur}
+\label{sec:DolibarrCommandeFournisseur}
+
+\subsection{Créer un nouveau bon de commande client}
+\label{sec:DolibarrCommandeClient}
+
+\subsection{Créer un devis, une proposition commerciale}
+\label{sec:DolibarrDevisPropal}
+
+\subsection{Créer un contrat de services}
+\label{sec:DolibarrContratServices}
+
+\subsection{Enregistrer le paiement d'une facture fournisseur}
+\label{sec:DolibarrPaiementFactureFournisseur}
+
+\subsection{Enregistrer le règlement d'une facture client}
+\label{sec:DolibarrPaiementFactureClient}
+
+\subsection{Expédier une commande}
+\label{sec:DolibarrExpedierCommande}
+
+\subsection{Gestion des adhérents}
+\label{sec:DolibarrGestionAdherents}
+
+Agenda partagé
+Point de vente/Caisse enregistreuse
+Réalisation de sondages
+EMailing de masses vers les clients, prospect ou utilisateurs Dolibarr
+Suivi des marges
+Recolte de dons 
+
+
+\section{Démarches, Recettes et HowTo}
+\label{sec:HowTo}
+
+\subsection{Je veux vendre mes CD, DVD, Tee-Shirt, etc.}
+\label{sec:HowToVendreMerchandising}
+
+\subsection{Je veux pouvoir vendre mon spectacle}
+\label{sec:HowToVendreSpectacle}
+Ajouter un nouveau service en vente
+Ajouter les services humains associés en achat
+
+\subsection{J'ai été contacté pour faire une représentation}
+\label{sec:HowToFaireRepresentation}
+Renseigner le Tiers comme client
+
+\subsection{Je veux démarcher un lieu de représentation}
+\label{sec:HowToDemarcherUnLieu}
+Renseigner le Tiers comme prospect
+Contacter le lieu et renseigner l'information
+Envoyer une proposition commerciale
+
+\subsection{Je veux faire intervenir des musiciens/techniciens lors d'une représentation}
+\label{sec:HowToInterventionFournisseur}
+Faire budget (Cf. tableau budget équilibré)
+
+
+\subsection{L'organisateur a accepté mon devis}
+\label{sec:HowToAcceptationDevis}
+
+
+
+% References bibliographiques
+\newpage \printbibheading
+\printbibliography[nottype=online,check=notonline,heading=subbibliography,title={Bibliographiques}]
+\printbibliography[check=online,heading=subbibliography,title={Webographiques}]
+\nocite{*}
 \end{document}
